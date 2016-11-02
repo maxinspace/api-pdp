@@ -3,6 +3,8 @@ class AuthenticateUser
 
   OPTIONS = { store: false, scope: :user }
 
+  delegate :warden, to: :context
+
   def call
     context.user = authenticated_user!
   end
@@ -10,7 +12,7 @@ class AuthenticateUser
   private
 
   def authenticated_user!
-    context.warden.request.env["devise.skip_trackable"] = false
-    context.warden.authenticate!(OPTIONS)
+    warden.request.env["devise.skip_trackable"] = false
+    warden.authenticate!(OPTIONS)
   end
 end
